@@ -1,0 +1,337 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;600&family=Rajdhani:wght@600;700&display=swap');
+
+:root {
+  --text: #FFFFFF;
+  --muted: #A8A8A8;
+  --accent: #39FF14;
+  --accent-dark: #2EE60F;
+  --danger: #FF3B3B;
+  --surface: rgba(4, 6, 8, 0.84);
+  --surface-alt: rgba(9, 11, 13, 0.92);
+  --stroke: rgba(57, 255, 20, 0.42);
+  --killer: #57FF35;
+  --victim: #FF3030;
+  --placeholder-border: #2A2C30;
+  --placeholder-bg: rgba(20, 21, 23, 0.85);
+  --entry-from: rgba(5, 8, 8, 0.92);
+  --entry-to: rgba(8, 10, 12, 0.86);
+  --entry-border: rgba(57, 255, 20, 0.48);
+  --drag-border: rgba(57, 255, 20, 0.35);
+  --drag-overlay-bg: rgba(0, 0, 0, 0.6);
+  --drag-cancel-border: #FF3B3B;
+  --shadow: 0 20px 45px rgba(4, 6, 12, 0.55);
+  --font: 'Rajdhani', 'Inter', 'Segoe UI', Tahoma, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  user-select: none;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  font-family: var(--font);
+  color: var(--text);
+  overflow: hidden;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.killfeed-shell {
+  position: fixed;
+  top: 16vh;
+  left: 98.5vw;
+  transform: translate(-100%, 0);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 9px;
+  width: clamp(390px, 23vw, 520px);
+  pointer-events: none;
+  z-index: 1200;
+  transform-origin: top right;
+}
+
+.killfeed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  align-self: flex-end;
+}
+
+.killfeed-placeholder {
+  width: 100%;
+  min-height: 58px;
+  border-radius: 6px;
+  border: 1px dashed var(--placeholder-border);
+  background: var(--placeholder-bg);
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.kill-entry {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(112px, 1fr) 74px 28px minmax(112px, 1fr);
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  min-height: 56px;
+  padding: 10px 18px 10px 24px;
+  background: linear-gradient(135deg, var(--entry-from), var(--entry-to));
+  border-radius: 5px;
+  border: 1px solid var(--entry-border);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.025),
+    0 12px 24px rgba(0, 0, 0, 0.48),
+    0 0 18px rgba(57, 255, 20, 0.08);
+  animation: slideIn 0.18s ease-out;
+  overflow: hidden;
+}
+
+.kill-entry::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-dark));
+  box-shadow: 0 0 18px var(--accent);
+}
+
+.kill-entry::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(57, 255, 20, 0.08), transparent 24%),
+    radial-gradient(circle at 0 50%, rgba(57, 255, 20, 0.18), transparent 38%);
+  opacity: 0.72;
+  pointer-events: none;
+}
+
+.kill-entry.fade {
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.player {
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  min-width: 0;
+  line-height: 1.1;
+  z-index: 1;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.65);
+}
+
+.player.killer {
+  color: var(--killer);
+  text-align: left;
+}
+
+.player.victim {
+  color: var(--victim);
+  text-align: left;
+}
+
+.weapon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  min-width: 0;
+  z-index: 1;
+}
+
+.weapon img {
+  width: 66px;
+  height: 24px;
+  object-fit: contain;
+  filter: brightness(0) invert(1) drop-shadow(0 2px 8px rgba(255, 255, 255, 0.2));
+}
+
+.weapon-label,
+.distance {
+  max-width: 74px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.impact {
+  position: relative;
+  z-index: 1;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+}
+
+.impact img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  filter: brightness(0) invert(1) drop-shadow(0 0 7px rgba(255, 255, 255, 0.18));
+}
+
+.impact-marker {
+  position: relative;
+  width: 21px;
+  height: 21px;
+  border: 2px solid rgba(255, 255, 255, 0.94);
+  border-radius: 50%;
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.18));
+}
+
+.impact-marker::before,
+.impact-marker::after {
+  content: "";
+  position: absolute;
+  background: rgba(255, 255, 255, 0.94);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.impact-marker::before {
+  width: 28px;
+  height: 2px;
+}
+
+.impact-marker::after {
+  width: 2px;
+  height: 28px;
+}
+
+@media (max-width: 1400px) {
+  .killfeed-shell {
+    width: clamp(360px, 32vw, 480px);
+  }
+}
+
+@media (max-width: 900px) {
+  .killfeed-shell {
+    width: min(92vw, 430px);
+  }
+
+  .kill-entry {
+    grid-template-columns: minmax(92px, 1fr) 58px 24px minmax(92px, 1fr);
+    min-height: 50px;
+    padding: 9px 12px 9px 18px;
+    gap: 8px;
+  }
+
+  .player {
+    font-size: 14px;
+  }
+
+  .weapon img {
+    width: 52px;
+    height: 20px;
+  }
+
+  .impact {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.drag-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  border: 1px dashed var(--drag-border);
+  background: var(--drag-overlay-bg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 20px;
+  font-size: 13px;
+  letter-spacing: 0.8px;
+  color: var(--text);
+  pointer-events: all;
+}
+
+.drag-copy {
+  text-transform: none;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-align: center;
+  line-height: 1.35;
+  white-space: pre-line;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.drag-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.drag-btn {
+  flex: 0 0 auto;
+  padding: 6px 18px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.drag-btn.drag-cancel {
+  border-color: var(--drag-cancel-border);
+  background: transparent;
+  color: var(--text);
+}
+
+.drag-btn.drag-save {
+  border-color: transparent;
+  background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+  color: #111;
+}
+
+.drag-btn:hover {
+  filter: brightness(1.05);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

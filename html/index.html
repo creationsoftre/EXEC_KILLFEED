@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EXEC Killfeed</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg'/>" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="killfeedShell" class="killfeed-shell hidden">
+      <div id="dragOverlay" class="drag-overlay hidden">
+        <div class="drag-copy">
+          <span id="dragHint">Drag to reposition</span>
+        </div>
+        <div class="drag-actions">
+          <button id="dragCancel" class="drag-btn drag-cancel" type="button">Cancel</button>
+          <button id="dragSave" class="drag-btn drag-save" type="button">Confirm</button>
+        </div>
+      </div>
+      <div id="killfeedPlaceholder" class="killfeed-placeholder hidden">
+        <span>Killfeed Anchor</span>
+      </div>
+      <div id="killfeedList" class="killfeed-list"></div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
